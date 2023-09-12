@@ -1,0 +1,7 @@
+{
+  "name": "readread",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
