@@ -1,20 +1,30 @@
-import MessageListItem from '../components/MessageListItem';
-import { useState } from 'react';
-import { Message, getMessages } from '../data/messages';
 import {
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonCardTitle,
   IonContent,
   IonHeader,
   IonList,
   IonPage,
+  IonProgressBar,
   IonRefresher,
   IonRefresherContent,
   IonTitle,
   IonToolbar,
   useIonViewWillEnter
 } from '@ionic/react';
+import { useState } from 'react';
+import MessageListItem from '../components/MessageListItem';
+import { Message, getMessages } from '../data/messages';
 import './Home.css';
+import { useQuery } from 'react-query';
+import { getPosts } from '../data/get-posts';
 
 const Home: React.FC = () => {
+  const [postId, setPostId] = useState<string | null>(null);
+  const { isLoading, isError, error, data } = useQuery('getPosts', () => getPosts(postId));
 
   const [messages, setMessages] = useState<Message[]>([]);
 
@@ -29,13 +39,11 @@ const Home: React.FC = () => {
     }, 3000);
   };
 
+  if (isLoading) return <IonProgressBar type="indeterminate"></IonProgressBar>
+  if (isError) return <>{(error as any).message ?? 'Error loading posts'}</>
+
   return (
     <IonPage id="home-page">
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Inbox</IonTitle>
-        </IonToolbar>
-      </IonHeader>
       <IonContent fullscreen>
         <IonRefresher slot="fixed" onIonRefresh={refresh}>
           <IonRefresherContent></IonRefresherContent>
@@ -50,7 +58,15 @@ const Home: React.FC = () => {
         </IonHeader>
 
         <IonList>
-          {messages.map(m => <MessageListItem key={m.id} message={m} />)}
+          {data?.map(({ data }) => (
+            <IonCard key={data.id}>
+              <IonCardHeader>
+                {data.thumbnail !== 'self' ? <img src={data.url} /> : <></>}
+                <IonCardSubtitle>{data.subreddit_name_prefixed}</IonCardSubtitle>
+                <IonCardTitle>({data.score}) {data.title}</IonCardTitle>
+              </IonCardHeader>
+            </IonCard>
+          ))}
         </IonList>
       </IonContent>
     </IonPage>
