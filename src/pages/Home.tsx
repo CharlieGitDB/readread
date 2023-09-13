@@ -1,6 +1,5 @@
 import {
   IonCard,
-  IonCardContent,
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
@@ -12,35 +11,29 @@ import {
   IonRefresher,
   IonRefresherContent,
   IonTitle,
-  IonToolbar,
-  useIonViewWillEnter
+  IonToolbar
 } from '@ionic/react';
 import { useState } from 'react';
-import MessageListItem from '../components/MessageListItem';
-import { Message, getMessages } from '../data/messages';
-import './Home.css';
 import { useQuery } from 'react-query';
 import { getPosts } from '../data/get-posts';
+import './Home.css';
+import CardImage from '../components/CardImage';
 
 const Home: React.FC = () => {
   const [postId, setPostId] = useState<string | null>(null);
-  const { isLoading, isError, error, data } = useQuery('getPosts', () => getPosts(postId));
-
-  const [messages, setMessages] = useState<Message[]>([]);
-
-  useIonViewWillEnter(() => {
-    const msgs = getMessages();
-    setMessages(msgs);
+  const { isLoading, isError, error, data, refetch, isFetching } = useQuery({
+    queryKey: ['getPosts'],
+    queryFn: () => getPosts(postId),
+    refetchOnWindowFocus: false
   });
 
-  const refresh = (e: CustomEvent) => {
-    setTimeout(() => {
-      e.detail.complete();
-    }, 3000);
+  const refresh = async (e: CustomEvent) => {
+    await refetch();
+    e.detail.complete();
   };
 
-  if (isLoading) return <IonProgressBar type="indeterminate"></IonProgressBar>
-  if (isError) return <>{(error as any).message ?? 'Error loading posts'}</>
+  if (isLoading || isFetching) return <IonProgressBar type="indeterminate"></IonProgressBar>
+  if (isError) return <>{(error as any)?.message ?? 'Error loading posts'}</>
 
   return (
     <IonPage id="home-page">
@@ -61,7 +54,11 @@ const Home: React.FC = () => {
           {data?.map(({ data }) => (
             <IonCard key={data.id}>
               <IonCardHeader>
-                {data.thumbnail !== 'self' ? <img src={data.url} /> : <></>}
+                <CardImage
+                  isSelf={data.is_self}
+                  isVideo={data.is_video}
+                  preview={data.preview}
+                />
                 <IonCardSubtitle>{data.subreddit_name_prefixed}</IonCardSubtitle>
                 <IonCardTitle>({data.score}) {data.title}</IonCardTitle>
               </IonCardHeader>
