@@ -1,18 +1,13 @@
+import { IonImg } from "@ionic/react";
 import { Preview } from "../data/models";
 
 interface CardImageProps {
-    isSelf: boolean;
-    isVideo: boolean;
-    preview?: Preview;
+    preview: Preview;
 }
 
-const CardImage: React.FC<CardImageProps> = ({ isSelf, isVideo, preview }) => ( 
-  <>
-    {isSelf || !preview
-        ? <></>
-        : <img src={preview.images[0].source.url} /> //need to handle slideshow
-    }
-  </> 
+const CardImage: React.FC<CardImageProps> = ({ preview }) => (
+    // need to handle slideshow and gifs
+    <IonImg src={preview.images[0].source.url} />
 )
 
 export default CardImage;

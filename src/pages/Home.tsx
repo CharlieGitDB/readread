@@ -23,7 +23,7 @@ import {
   RefresherCustomEvent
 } from '@ionic/react';
 import { chatbox, heart } from 'ionicons/icons';
-import CardImage from '../components/CardImage';
+import CardMedia from '../components/CardMedia';
 import usePostPageQuery from '../hooks/usePostPageQuery';
 import './Home.css';
 
@@ -62,10 +62,11 @@ const Home: React.FC = () => {
           {data?.pages.flat().map(({ data }) => (
               <IonCard key={data.id}>
                 <IonCardHeader>
-                  <CardImage
+                  <CardMedia
                     isSelf={data.is_self}
                     isVideo={data.is_video}
                     preview={data.preview}
+                    media={data.media}
                   />
                   <IonCardSubtitle>{data.subreddit_name_prefixed}</IonCardSubtitle>
                   <IonCardTitle>{data.title}</IonCardTitle>
