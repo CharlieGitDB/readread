@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Reddit } from "./models";
+import { Reddit } from "./home-models";
 
 type GetPostData = { kind?: string | null, lastPostId?: string | null };
 
