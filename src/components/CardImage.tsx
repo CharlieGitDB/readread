@@ -1,5 +1,5 @@
 import { IonImg } from "@ionic/react";
-import { Preview } from "../data/models";
+import { Preview } from "../data/home-models";
 
 interface CardImageProps {
     preview: Preview;

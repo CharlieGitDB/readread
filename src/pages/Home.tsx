@@ -1,15 +1,7 @@
 import {
   InfiniteScrollCustomEvent,
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardSubtitle,
-  IonCardTitle,
-  IonCol,
   IonContent,
-  IonGrid,
   IonHeader,
-  IonIcon,
   IonInfiniteScroll,
   IonInfiniteScrollContent,
   IonList,
@@ -17,13 +9,11 @@ import {
   IonProgressBar,
   IonRefresher,
   IonRefresherContent,
-  IonRow,
   IonTitle,
   IonToolbar,
   RefresherCustomEvent
 } from '@ionic/react';
-import { chatbox, heart } from 'ionicons/icons';
-import CardMedia from '../components/CardMedia';
+import Card from '../components/Card';
 import usePostPageQuery from '../hooks/usePostPageQuery';
 import './Home.css';
 
@@ -40,8 +30,8 @@ const Home: React.FC = () => {
     e.target.complete();
   }
 
-  if (isLoading) return <IonProgressBar type="indeterminate"></IonProgressBar>
-  if (isError) return <>{(error as any)?.message ?? 'Error loading posts'}</>
+  if (isLoading) return <IonProgressBar type='indeterminate' />
+  if (isError) return <>{(error as { message?: string })?.message ?? 'Error loading posts'}</>
 
   return (
     <IonPage id="home-page">
@@ -59,34 +49,20 @@ const Home: React.FC = () => {
         </IonHeader>
 
         <IonList>
-          {data?.pages.flat().map(({ data }) => (
-              <IonCard key={data.id}>
-                <IonCardHeader>
-                  <CardMedia
-                    isSelf={data.is_self}
-                    isVideo={data.is_video}
-                    preview={data.preview}
-                    media={data.media}
-                  />
-                  <IonCardSubtitle>{data.subreddit_name_prefixed}</IonCardSubtitle>
-                  <IonCardTitle>{data.title}</IonCardTitle>
-                </IonCardHeader>
-                <IonCardContent>
-                  <IonGrid className='meta-grid'>
-                    <IonRow>
-                      <IonCol>
-                        <IonIcon icon={heart}></IonIcon>
-                        {data.score}
-                      </IonCol>
-                      <IonCol>
-                        <IonIcon icon={chatbox}></IonIcon>
-                        {data.num_comments}
-                      </IonCol>
-                    </IonRow>
-                  </IonGrid>
-                </IonCardContent>
-              </IonCard>
-          ))}
+          {data?.pages.flat().map(({ data }) =>
+            <Card
+              key={data.id}
+              id={data.id}
+              isSelf={data.is_self}
+              isVideo={data.is_video}
+              subredditName={data.subreddit}
+              title={data.title}
+              preview={data.preview}
+              media={data.media}
+              score={data.score}
+              commentsCount={data.num_comments}
+            />
+          )}
         </IonList>
         <IonInfiniteScroll onIonInfinite={loadMorePosts}>
           <IonInfiniteScrollContent></IonInfiniteScrollContent>

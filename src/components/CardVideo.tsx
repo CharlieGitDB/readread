@@ -1,4 +1,4 @@
-import { Media, Preview } from "../data/models";
+import { Media, Preview } from "../data/home-models";
 import CardImage from "./CardImage";
 
 interface CardVideo {
