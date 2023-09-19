@@ -16,6 +16,7 @@ import {
 import Card from '../components/Card';
 import usePostPageQuery from '../hooks/usePostPageQuery';
 import './Home.css';
+import { AxiosError } from 'axios';
 
 const Home: React.FC = () => {
   const { data, isLoading, isError, error, refetch, fetchNextPage } = usePostPageQuery();
@@ -31,7 +32,7 @@ const Home: React.FC = () => {
   }
 
   if (isLoading) return <IonProgressBar type='indeterminate' />
-  if (isError) return <>{(error as { message?: string })?.message ?? 'Error loading posts'}</>
+  if (isError) return <>{(error as AxiosError)?.message ?? 'Error loading posts'}</>
 
   return (
     <IonPage id="home-page">
