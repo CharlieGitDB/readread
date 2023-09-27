@@ -216,7 +216,7 @@ export interface TentacledData {
     banned_by?:                       null;
     author_flair_type?:               FlairType;
     total_awards_received?:           number;
-    subreddit?:                       Subreddit;
+    subreddit?:                       string;
     author_flair_template_id?:        null;
     likes?:                           null;
     replies?:                         FluffyReplies | string;
@@ -985,7 +985,7 @@ export interface Data6 {
     banned_by?:                       null;
     author_flair_type?:               FlairType;
     total_awards_received?:           number;
-    subreddit?:                       Subreddit;
+    subreddit?:                       string;
     author_flair_template_id?:        null;
     likes?:                           null;
     replies?:                         MagentaReplies;

@@ -1,14 +1,22 @@
-import { IonAccordion, IonAccordionGroup, IonBackButton, IonButtons, IonContent, IonHeader, IonItem, IonList, IonPage, IonProgressBar } from "@ionic/react";
+import { IonBackButton, IonButtons, IonContent, IonHeader, IonList, IonPage, IonProgressBar } from "@ionic/react";
 import { AxiosError } from "axios";
-import ReactMarkdown from "react-markdown";
 import { useQuery } from "react-query";
 import { useParams } from "react-router";
+import Comment from "../components/Comment";
 import { getPost } from "../data/get-post";
-import { Post as PostModel, PurpleReplies } from "../data/post-models";
+import { Post as PostModel } from "../data/post-models";
 
 const Post: React.FC = () => {
   const { subreddit, postId } = useParams<{ subreddit: string, postId: string }>();
-  const { data, isLoading, isError, error } = useQuery<PostModel[]>(['post', postId], () => getPost(subreddit, postId));
+  const { data, isLoading, isError, error } = useQuery<PostModel[]>(
+    ['post', postId],
+    () => getPost(subreddit, postId),
+    {
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      refetchIntervalInBackground: false
+    }
+  );
   
   const IsLoading = () => <IonProgressBar type='indeterminate' />;
   const IsError = () => <>{(error as AxiosError)?.message ?? 'Error loading post'}</>;
@@ -22,29 +30,22 @@ const Post: React.FC = () => {
     return posts.map(p => p.data.children.map(c => (
       {
         comment: c.data.body ?? '',
-        replies: c.data.replies ?? []
+        replies: c.data.replies
       }
     ))).flat();
   }
 
-  const Cards = () => (
+  const Comments = () => (
     <IonContent fullscreen>
       <IonList>
         {normalizedData().map((c, i) =>
-          <IonAccordionGroup key={i} value="open">
-            <IonAccordion value="open">
-              <IonItem slot="header">
-                <ReactMarkdown>{c.comment}</ReactMarkdown>
-              </IonItem>
-              <div className="ion-padding" slot="content">
-                <ul>
-                  {(c.replies as PurpleReplies).data?.children?.map((x, ii) => (
-                    x.kind === 'more' ? <li key={ii}>Read more</li> : <li key={ii}>{x.data.body}</li>
-                  ))}
-                </ul>
-              </div>
-            </IonAccordion>
-          </IonAccordionGroup>
+          <Comment
+            key={i}
+            open={true}
+            subreddit={subreddit}
+            postId={postId}
+            comment={c.comment}
+            replies={c.replies} />
         )}
       </IonList>
     </IonContent>
@@ -54,7 +55,7 @@ const Post: React.FC = () => {
     if (isLoading) return <IsLoading />
     if (isError) return <IsError />
 
-    return <Cards />
+    return <Comments />
   }
 
   return (
