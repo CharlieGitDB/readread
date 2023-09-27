@@ -8,9 +8,10 @@ interface ReadMoreProps {
   subreddit: string;
   postId: string;
   commentId: string;
+  color: string
 }
 
-const ReadMore: React.FC<ReadMoreProps> = ({ subreddit, postId, commentId }) => {
+const ReadMore: React.FC<ReadMoreProps> = ({ subreddit, postId, commentId, color }) => {
   const { data, isError, error, isFetching, refetch } = useQuery<Post[]>(
     ['comments', commentId],
     () => getMoreComments(subreddit, postId, commentId),
@@ -31,7 +32,7 @@ const ReadMore: React.FC<ReadMoreProps> = ({ subreddit, postId, commentId }) => 
 
   if (isFetching) return (
     <IonAccordionGroup>
-      <IonAccordion readonly={true} toggleIcon={undefined}>
+      <IonAccordion style={{ borderLeft: `3px solid ${color}`}} readonly={true} toggleIcon={undefined}>
         <IonItem slot="header">
           <IonProgressBar type='indeterminate' />
         </IonItem>
@@ -58,8 +59,8 @@ const ReadMore: React.FC<ReadMoreProps> = ({ subreddit, postId, commentId }) => 
         {
           normalizedData().map((c, i) => (
             c.kind === 'more'
-            ? <ReadMore key={i} subreddit={subreddit} postId={postId} commentId={c.data.id} />
-            : <Comment key={i} subreddit={subreddit} postId={postId} comment={c.data.body} replies={c.data.replies as PurpleReplies} />
+            ? <ReadMore key={i} subreddit={subreddit} postId={postId} commentId={c.data.id} color={color} />
+            : <Comment key={i} subreddit={subreddit} postId={postId} comment={c.data.body} replies={c.data.replies as PurpleReplies} color={color} />
           ))
         }
       </>
