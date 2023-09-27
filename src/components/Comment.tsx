@@ -3,6 +3,7 @@ import ReactMarkdown from 'react-markdown';
 import { ChildKind, FluffyReplies, PurpleReplies } from '../data/post-models';
 import ReadMore from './ReadMore';
 import { ReactNode } from 'react';
+import './Comment.css';
 
 interface CommentProps {
   subreddit: string,
@@ -50,7 +51,7 @@ const Comment: React.FC<CommentProps> = ({ subreddit, postId, comment, replies, 
           <IonItem slot="header">
             <ReactMarkdown>{comment}</ReactMarkdown>
           </IonItem>
-          <div className="ion-padding" slot="content">
+          <div className="accordion-content" slot="content">
             <Reply replies={replies} />
           </div>
       </Accordion>
