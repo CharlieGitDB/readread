@@ -14,13 +14,12 @@ on:
       resourcegroup-location:
         type: choice
         description: Select the location
-        default: "eastus"
+        default: "eastus2"
         options:
-          - "eastus"
-          - "westus"
+          - "westu2"
+          - "eastus2"
           - "centralus"
-          - "southcentralus"
-          - "northeurope"
+          - "westeurope"
 
 jobs:
     build-and-deploy:
