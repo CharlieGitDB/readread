@@ -9,7 +9,7 @@ resource readreadswa 'Microsoft.Web/staticSites@2021-01-15' = {
         branch: 'main'
         repositoryUrl: repoUrl
         buildProperties: {
-            appLocation: './'
+            appLocation: './app'
             outputLocation: './output'
         }
     }
