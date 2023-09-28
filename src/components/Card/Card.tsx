@@ -1,8 +1,8 @@
 import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCol, IonGrid, IonIcon, IonRow } from "@ionic/react";
 import { chatbox, heart } from "ionicons/icons";
-import { Media, Preview } from "../data/home-models";
+import { Media, Preview } from '../../models/home';
 import './Card.css';
-import CardMedia from "./CardMedia";
+import { CardMedia } from "@components";
 
 interface CardProps {
   id: string,
@@ -16,7 +16,7 @@ interface CardProps {
   commentsCount: number;
 }
 
-const Card: React.FC<CardProps> = (cardProps) => (
+export const Card: React.FC<CardProps> = (cardProps) => (
   <IonCard
     id="card"
     key={cardProps.id}
@@ -48,5 +48,3 @@ const Card: React.FC<CardProps> = (cardProps) => (
     </IonCardContent>
   </IonCard>
 )
-
-export default Card;

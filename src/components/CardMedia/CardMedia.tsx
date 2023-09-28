@@ -1,6 +1,5 @@
-import { Media, Preview } from "../data/home-models";
-import CardImage from "./CardImage";
-import CardVideo from "./CardVideo";
+import { Media, Preview } from "../../models/home";
+import { CardVideo, CardImage } from '@components';
 
 interface CardMediaProps {
     isSelf: boolean;
@@ -9,7 +8,7 @@ interface CardMediaProps {
     media?: Media | null;
 }
 
-const CardMedia: React.FC<CardMediaProps> = ({ isSelf, isVideo, preview, media }) => ( 
+export const CardMedia: React.FC<CardMediaProps> = ({ isSelf, isVideo, preview, media }) => ( 
   <>
     {isSelf || !preview
         ? <></>
@@ -20,5 +19,3 @@ const CardMedia: React.FC<CardMediaProps> = ({ isSelf, isVideo, preview, media }
     }
   </> 
 )
-
-export default CardMedia;

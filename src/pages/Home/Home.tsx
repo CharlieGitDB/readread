@@ -1,7 +1,6 @@
 import {
   InfiniteScrollCustomEvent,
   IonContent,
-  IonHeader,
   IonInfiniteScroll,
   IonInfiniteScrollContent,
   IonList,
@@ -9,16 +8,14 @@ import {
   IonProgressBar,
   IonRefresher,
   IonRefresherContent,
-  IonTitle,
-  IonToolbar,
   RefresherCustomEvent
 } from '@ionic/react';
-import Card from '../components/Card';
-import usePostPageQuery from '../hooks/usePostPageQuery';
-import './Home.css';
 import { AxiosError } from 'axios';
+import './Home.css';
+import usePostPageQuery from '../../hooks/usePostPageQuery';
+import { Card } from '../../components';
 
-const Home: React.FC = () => {
+export const Home: React.FC = () => {
   const { data, isLoading, isError, error, refetch, fetchNextPage } = usePostPageQuery();
 
   const refresh = async (e: RefresherCustomEvent) => {
@@ -64,5 +61,3 @@ const Home: React.FC = () => {
     </IonPage>
   );
 };
-
-export default Home;

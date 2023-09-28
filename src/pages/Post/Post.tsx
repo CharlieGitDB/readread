@@ -2,11 +2,11 @@ import { IonBackButton, IonButtons, IonContent, IonHeader, IonList, IonPage, Ion
 import { AxiosError } from "axios";
 import { useQuery } from "react-query";
 import { useParams } from "react-router";
-import Comment from "../components/Comment";
-import { getPost } from "../data/get-post";
-import { Post as PostModel } from "../data/post-models";
+import { getPost } from '@data';
+import { Post as PostModel } from '../../models/post';
+import { Comment } from "@components";
 
-const Post: React.FC = () => {
+export const Post: React.FC = () => {
   const { subreddit, postId } = useParams<{ subreddit: string, postId: string }>();
   const { data, isLoading, isError, error } = useQuery<PostModel[]>(
     ['post', postId],
@@ -69,5 +69,3 @@ const Post: React.FC = () => {
     </IonPage>
   )
 }
-
-export default Post;

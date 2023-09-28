@@ -1,12 +1,12 @@
-import { Media, Preview } from "../data/home-models";
-import CardImage from "./CardImage";
+import { Media, Preview } from "../../models/home";
+import { CardImage } from '@components';
 
 interface CardVideo {
   preview: Preview;
   media: Media;
 }
 
-const CardVideo: React.FC<CardVideo> = ({ preview, media }) => (
+export const CardVideo: React.FC<CardVideo> = ({ preview, media }) => (
   <video preload="auto" poster={preview.images[0].source.url} controls>
     <source src={media.reddit_video.dash_url}></source>
     <source src={media.reddit_video.fallback_url}></source>
@@ -14,5 +14,3 @@ const CardVideo: React.FC<CardVideo> = ({ preview, media }) => (
     <CardImage preview={preview} />
   </video>
 )
-
-export default CardVideo;

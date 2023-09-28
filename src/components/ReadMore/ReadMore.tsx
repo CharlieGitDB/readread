@@ -1,8 +1,8 @@
 import { IonAccordion, IonAccordionGroup, IonItem, IonProgressBar } from "@ionic/react";
 import { useQuery } from "react-query";
-import { getMoreComments } from "../data/get-more-comments";
-import { Post, PurpleReplies } from "../data/post-models";
-import Comment from './Comment';
+import { getMoreComments } from "@data";
+import { Post, PurpleReplies } from '../../models/post';
+import { Comment } from "@components";
 
 interface ReadMoreProps {
   subreddit: string;
@@ -11,7 +11,7 @@ interface ReadMoreProps {
   color: string
 }
 
-const ReadMore: React.FC<ReadMoreProps> = ({ subreddit, postId, commentId, color }) => {
+export const ReadMore: React.FC<ReadMoreProps> = ({ subreddit, postId, commentId, color }) => {
   const { data, isError, error, isFetching, refetch } = useQuery<Post[]>(
     ['comments', commentId],
     () => getMoreComments(subreddit, postId, commentId),
@@ -67,5 +67,3 @@ const ReadMore: React.FC<ReadMoreProps> = ({ subreddit, postId, commentId, color
     )
   }
 }
-
-export default ReadMore;

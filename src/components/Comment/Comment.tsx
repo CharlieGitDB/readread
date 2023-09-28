@@ -1,10 +1,10 @@
 import { IonAccordion, IonAccordionGroup, IonItem } from '@ionic/react';
+import { ReactNode } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { ChildKind, FluffyReplies, PurpleReplies } from '../data/post-models';
-import ReadMore from './ReadMore';
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import { ChildKind, FluffyReplies, PurpleReplies } from '../../models/post';
+import { randomColor } from '@util';
 import './Comment.css';
-import randomColor from '../data/random-color';
+import { ReadMore } from '@components';
 
 interface CommentProps {
   subreddit: string,
@@ -15,7 +15,7 @@ interface CommentProps {
   replies?: string | PurpleReplies | FluffyReplies,
 }
 
-const Comment: React.FC<CommentProps> = ({ subreddit, postId, color, comment, replies, open = false }) => {
+export const Comment: React.FC<CommentProps> = ({ subreddit, postId, color, comment, replies, open = false }) => {
   if (!comment) return <></>;
   
   const Reply = ({ replies }: { replies: string | PurpleReplies | FluffyReplies | undefined }) => {
@@ -62,5 +62,3 @@ const Comment: React.FC<CommentProps> = ({ subreddit, postId, color, comment, re
     </IonAccordionGroup>
   )
 }
-
-export default Comment;
