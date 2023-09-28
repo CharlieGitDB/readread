@@ -14,7 +14,7 @@ resource readreadswa 'Microsoft.Web/staticSites@2021-01-15' = {
     }
   }
   sku: {
-    name: 'F1'
+    name: 'Free'
     capacity: 1
   }
 }
