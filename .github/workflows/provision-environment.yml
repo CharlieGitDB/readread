@@ -14,13 +14,12 @@ on:
       resourcegroup-location:
         type: choice
         description: Select the location
-        default: "eastus"
+        default: "eastus2"
         options:
-          - "eastus"
-          - "westus"
+          - "westu2"
+          - "eastus2"
           - "centralus"
-          - "southcentralus"
-          - "northeurope"
+          - "westeurope"
 
 jobs:
     build-and-deploy:
@@ -44,3 +43,4 @@ jobs:
             region: ${{ inputs.resourcegroup-location }}
             parameters: location=${{ inputs.resourcegroup-location }} resourceGroupName=${{ inputs.environment }}-${{ secrets.AZURE_RG }}-rg
             template: ${{ github.workspace }}/infrastructure/main.bicep
+            deploymentName: ${{ inputs.environment }}-${{ secrets.AZURE_RG }}-rg-${{ inputs.resourcegroup-location }}-deploy
