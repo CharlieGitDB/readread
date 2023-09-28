@@ -1,4 +1,5 @@
 param repoUrl string
+@allowed([ 'westus2', 'eastus2', 'centralus', 'westeurope' ])
 param location string
 param token string
 
