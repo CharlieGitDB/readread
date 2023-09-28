@@ -54,5 +54,5 @@ jobs:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         scope: resourcegroup
         resourceGroupName: ${{ env.RESOURCEGROUP_NAME }}
-        parameters: repoUrl=https://github.com/${{ github.repository }}
+        parameters: location=${{ env.RESOURCEGROUP_LOCATION }} repoUrl=https://github.com/${{ github.repository }}
         template: ${{ github.workspace }}/infrastructure/app.bicep
