@@ -45,6 +45,7 @@ jobs:
     - name: Get resource group location
       run: |
         RESOURCEGROUP_LOCATION=$(az group show --name ${{ env.RESOURCEGROUP_NAME }} --query 'location' --output tsv)
+        echo "RESOURCEGROUP_LOCATION=$RESOURCEGROUP_LOCATION" >> $GITHUB_ENV
 
     # Deploy Static Web App
     - name: Deploy static web app
