@@ -76,3 +76,4 @@ jobs:
         action: "upload"
         app_location: "/app" # App source code path
         output_location: "/dist"
+        routes_location: "/app"
