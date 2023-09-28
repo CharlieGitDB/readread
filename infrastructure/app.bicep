@@ -1,5 +1,6 @@
 param repoUrl string
 param location string
+param token string
 
 resource readreadswa 'Microsoft.Web/staticSites@2021-01-15' = {
   name: 'readread'
@@ -7,6 +8,7 @@ resource readreadswa 'Microsoft.Web/staticSites@2021-01-15' = {
   tags: null
   properties: {
     branch: 'main'
+    repositoryToken: token
     repositoryUrl: repoUrl
     buildProperties: {
       appBuildCommand: 'npm run build'
