@@ -1,0 +1,26 @@
+name: Teardown environment
+
+on:
+  workflow_dispatch:
+    inputs:
+        environment:
+          type: choice
+          description: Select the environment
+          default: "dev"
+          options:
+              - "dev"
+              - "stage"
+              - "production"
+
+jobs:
+  delete-resourcegroup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@main
+      - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Delete Resource Group
+        run: |
+          az group delete --resource-group ${{ inputs.environment }}-${{ secrets.AZURE_RG}}-rg --yes

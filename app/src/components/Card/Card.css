@@ -1,0 +1,9 @@
+#card .meta-grid ion-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#card .meta-grid ion-col ion-icon {
+    padding: -1.2em;
+}

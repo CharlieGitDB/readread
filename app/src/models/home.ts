@@ -1,3 +1,6 @@
+/**
+ * AUTO GENERATED FROM HTTP RESPONSE JSON
+ */
 export interface Reddit {
     kind: string;
     data: RedditData;

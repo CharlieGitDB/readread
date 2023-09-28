@@ -1,0 +1,46 @@
+name: Provision environment
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        description: Select the environment
+        default: "dev"
+        options:
+            - "dev"
+            - "stage"
+            - "production"
+      resourcegroup-location:
+        type: choice
+        description: Select the location
+        default: "eastus"
+        options:
+          - "eastus"
+          - "westus"
+          - "centralus"
+          - "southcentralus"
+          - "northeurope"
+
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
+        steps:
+        
+        # Checkout code
+        - uses: actions/checkout@main
+
+        # Log into Azure
+        - uses: azure/login@v1
+          with:
+            creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+        # Deploy Resource group file
+        - name: Create resource group
+          uses: azure/arm-deploy@v1
+          with:
+            subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+            scope: subscription
+            region: ${{ inputs.resourcegroup-location }}
+            parameters: location=${{ inputs.resourcegroup-location }} resourceGroupName=${{ inputs.environment }}-${{ secrets.AZURE_RG }}-rg
+            template: ${{ github.workspace }}/infrastructure/main.bicep
