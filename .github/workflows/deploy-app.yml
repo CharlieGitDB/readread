@@ -41,10 +41,10 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    # # Get resource group location
-    # - name: Get resource group location
-    #   run: |
-    #     RESOURCEGROUP_LOCATION=$(az group show --name ${{ }} --query 'location' --output tsv)
+    # Get resource group location
+    - name: Get resource group location
+      run: |
+        RESOURCEGROUP_LOCATION=$(az group show --name ${{ env.RESOURCEGROUP_NAME }} --query 'location' --output tsv)
 
     # Deploy Static Web App
     - name: Deploy static web app
@@ -53,5 +53,6 @@ jobs:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         scope: subscription
         resourceGroupName: ${{ env.RESOURCEGROUP_NAME }}
+        region: ${{ env.RESOURCEGROUP_LOCATION }}
         parameters: repoUrl=https://github.com/${{ github.repository }}
         template: ${{ github.workspace }}/infrastructure/app.bicep
