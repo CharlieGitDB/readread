@@ -52,8 +52,7 @@ jobs:
       uses: azure/arm-deploy@v1
       with:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-        scope: subscription
+        scope: resourcegroup
         resourceGroupName: ${{ env.RESOURCEGROUP_NAME }}
-        region: ${{ env.RESOURCEGROUP_LOCATION }}
         parameters: repoUrl=https://github.com/${{ github.repository }}
         template: ${{ github.workspace }}/infrastructure/app.bicep
