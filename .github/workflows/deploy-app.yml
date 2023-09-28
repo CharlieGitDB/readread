@@ -1,0 +1,47 @@
+name: Deploy to Azure Static Web App
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: environment
+        description: Select the environment
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Set default deploy environment
+      run: |
+        if [ -z "${{ inputs.environment }}" ]
+        then
+          echo "DEPLOY_ENV=dev" >> $GITHUB_ENV
+        else
+          echo "DEPLOY_ENV=${{ inputs.environment }}" >> $GITHUB_ENV
+        fi
+      
+        - name: Set resource group environment name
+        run: |
+          echo "RESOURCEGROUP_NAME=${{ env.DEPLOY_ENV }}-${{ secrets.AZURE_RG }}-rg" >> $GITHUB_ENV
+
+    # Checkout code
+    - uses: actions/checkout@main
+
+    # Log into Azure
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    # Deploy Static Web App
+    - name: Deploy static web app
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+        scope: subscription
+        resourceGroupName: ${{ secrets.AZURE_RG }}
+        parameters: repoUrl=https://github.com/${{ github.repository }}
+        template: ${{ github.workspace }}/infrastructure/app.bicep
