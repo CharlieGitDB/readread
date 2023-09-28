@@ -47,6 +47,15 @@ jobs:
         RESOURCEGROUP_LOCATION=$(az group show --name ${{ env.RESOURCEGROUP_NAME }} --query 'location' --output tsv)
         echo "RESOURCEGROUP_LOCATION=$RESOURCEGROUP_LOCATION" >> $GITHUB_ENV
 
+    - name: Get SWA deployment token
+      uses: azure/CLI@v1
+      id: swa-token
+      with:
+        inlineScript: |
+          SWA_DEPLOYMENT_TOKEN=$(az staticwebapp secrets list -n readread -o tsv --query properties.apiKey)
+          echo "::add-mask::$SWA_DEPLOYMENT_TOKEN"
+          echo SWA_DEPLOYMENT_TOKEN=$SWA_DEPLOYMENT_TOKEN >> $GITHUB_ENV
+
     # Deploy Static Web App
     - name: Deploy static web app
       uses: azure/arm-deploy@v1
@@ -54,7 +63,7 @@ jobs:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         scope: resourcegroup
         resourceGroupName: ${{ env.RESOURCEGROUP_NAME }}
-        parameters: location=${{ env.RESOURCEGROUP_LOCATION }} repoUrl=https://github.com/${{ github.repository }}
+        parameters: location=${{ env.RESOURCEGROUP_LOCATION }} repoUrl=https://github.com/${{ github.repository }} token=${{ env.SWA_DEPLOYMENT_TOKEN }}
         template: ${{ github.workspace }}/infrastructure/app.bicep
         deploymentName: ${{ env.RESOURCEGROUP_NAME }}-${{ env.RESOURCEGROUP_LOCATION}}-deploy
 
