@@ -1,5 +1,6 @@
 param repoUrl string
 param location string
+param path string
 
 resource readreadswa 'Microsoft.Web/staticSites@2021-01-15' = {
   name: 'readread'
@@ -10,8 +11,8 @@ resource readreadswa 'Microsoft.Web/staticSites@2021-01-15' = {
     repositoryUrl: repoUrl
     buildProperties: {
       appBuildCommand: 'npm run build'
-      appLocation: './app'
-      outputLocation: './app/dist'
+      appLocation: '${path}/app'
+      outputLocation: '${path}/app/dist'
     }
   }
   sku: {
@@ -19,3 +20,5 @@ resource readreadswa 'Microsoft.Web/staticSites@2021-01-15' = {
     capacity: 1
   }
 }
+
+output staticWebAppUrl string = readreadswa.properties.defaultHostname
