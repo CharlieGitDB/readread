@@ -29,9 +29,9 @@ jobs:
           echo "DEPLOY_ENV=${{ inputs.environment }}" >> $GITHUB_ENV
         fi
       
-        - name: Set resource group environment name
-        run: |
-          echo "RESOURCEGROUP_NAME=${{ env.DEPLOY_ENV }}-${{ secrets.AZURE_RG }}-rg" >> $GITHUB_ENV
+    - name: Set resource group environment name
+      run: |
+        echo "RESOURCEGROUP_NAME=${{ env.DEPLOY_ENV }}-${{ secrets.AZURE_RG }}-rg" >> $GITHUB_ENV
 
     # Checkout code
     - uses: actions/checkout@main
