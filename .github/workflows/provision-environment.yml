@@ -43,3 +43,4 @@ jobs:
             region: ${{ inputs.resourcegroup-location }}
             parameters: location=${{ inputs.resourcegroup-location }} resourceGroupName=${{ inputs.environment }}-${{ secrets.AZURE_RG }}-rg
             template: ${{ github.workspace }}/infrastructure/main.bicep
+            deploymentName: ${{ inputs.environment }}-${{ secrets.AZURE_RG }}-rg-${{ inputs.resourcegroup-location }}-deploy

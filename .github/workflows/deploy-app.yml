@@ -56,3 +56,4 @@ jobs:
         resourceGroupName: ${{ env.RESOURCEGROUP_NAME }}
         parameters: location=${{ env.RESOURCEGROUP_LOCATION }} repoUrl=https://github.com/${{ github.repository }}
         template: ${{ github.workspace }}/infrastructure/app.bicep
+        deploymentName: ${{ env.RESOURCEGROUP_NAME }}-${{ env.RESOURCEGROUP_LOCATION}}-deploy
