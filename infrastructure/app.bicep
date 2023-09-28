@@ -10,9 +10,9 @@ resource readreadswa 'Microsoft.Web/staticSites@2021-01-15' = {
     repositoryUrl: repoUrl
     buildProperties: {
       appBuildCommand: 'npm run build'
-      appLocation: 'app'
-      appArtifactLocation: 'app'
-      outputLocation: 'app/dist'
+      appLocation: './app'
+      appArtifactLocation: './app/dist'
+      outputLocation: './app/dist'
     }
   }
   sku: {
