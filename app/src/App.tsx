@@ -23,7 +23,9 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
-setupIonicReact();
+setupIonicReact({
+  swipeBackEnabled: true
+});
 
 const queryClient = new QueryClient();
 
