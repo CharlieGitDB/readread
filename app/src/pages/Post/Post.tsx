@@ -1,10 +1,10 @@
-import { IonBackButton, IonButtons, IonContent, IonHeader, IonList, IonPage, IonProgressBar } from "@ionic/react";
+import { Comment } from "@components";
+import { getPost } from '@data';
+import { IonContent, IonList, IonPage, IonProgressBar } from "@ionic/react";
 import { AxiosError } from "axios";
 import { useQuery } from "react-query";
 import { useParams } from "react-router";
-import { getPost } from '@data';
 import { Post as PostModel } from '../../models/post';
-import { Comment } from "@components";
 
 export const Post: React.FC = () => {
   const { subreddit, postId } = useParams<{ subreddit: string, postId: string }>();
@@ -60,11 +60,6 @@ export const Post: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader collapse="fade">
-        <IonButtons slot="start">
-          <IonBackButton text="Posts" defaultHref="/home"/>
-        </IonButtons>
-      </IonHeader>
       <Content />
     </IonPage>
   )
