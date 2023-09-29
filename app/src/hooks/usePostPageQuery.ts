@@ -9,6 +9,7 @@ const usePostPageQuery = () => {
       refetchOnWindowFocus: false,
       refetchOnMount: false,
       refetchIntervalInBackground: false,
+      refetchOnReconnect: false,
       getNextPageParam: (lastPage, _) => {
         const posts = [...lastPage.values()];
 
