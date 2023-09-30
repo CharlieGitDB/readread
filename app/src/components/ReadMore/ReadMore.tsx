@@ -3,6 +3,7 @@ import { useQuery } from "react-query";
 import { getMoreComments } from "@data";
 import { Post, PurpleReplies } from '../../models/post';
 import { Comment } from "@components";
+import { normalizeData } from "@util";
 
 interface ReadMoreProps {
   subreddit: string;
@@ -44,20 +45,11 @@ export const ReadMore: React.FC<ReadMoreProps> = ({ subreddit, postId, commentId
     <>Error</>
   )
 
-  const normalizedData = () => {
-    if (!data) {
-      return [];
-    }
-    const [_, ...posts] = data;
-
-    return posts.map(p => p.data.children.map(c => c)).flat();
-  }
-
   if (data) {
     return (
       <>
         {
-          normalizedData().map((c, i) => (
+          normalizeData(data).map((c, i) => (
             c.kind === 'more'
             ? <ReadMore key={i} subreddit={subreddit} postId={postId} commentId={c.data.id} color={color} />
             : <Comment key={i} subreddit={subreddit} postId={postId} comment={c.data.body} replies={c.data.replies as PurpleReplies} color={color} />

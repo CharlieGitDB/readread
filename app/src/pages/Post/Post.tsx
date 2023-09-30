@@ -1,12 +1,15 @@
 import { Comment } from "@components";
 import { getPost } from '@data';
-import { IonContent, IonList, IonPage, IonProgressBar } from "@ionic/react";
+import { IonContent, IonPage, IonProgressBar, useIonViewDidEnter } from "@ionic/react";
 import { AxiosError } from "axios";
+import { useRef } from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router";
 import { Post as PostModel } from '../../models/post';
+import { normalizeData } from '@util';
 
 export const Post: React.FC = () => {
+  const ionContent = useRef<HTMLIonContentElement | null>(null);
   const { subreddit, postId } = useParams<{ subreddit: string, postId: string }>();
   const { data, isLoading, isError, error } = useQuery<PostModel[]>(
     ['post', postId],
@@ -17,37 +20,25 @@ export const Post: React.FC = () => {
       refetchIntervalInBackground: false
     }
   );
+
+  useIonViewDidEnter(() => {
+    ionContent.current?.scrollToTop();
+  })
   
   const IsLoading = () => <IonProgressBar type='indeterminate' />;
   const IsError = () => <>{(error as AxiosError)?.message ?? 'Error loading post'}</>;
 
-  const normalizedData = () => {
-    if (!data) {
-      return [];
-    }
-    const [_, ...posts] = data;
-
-    return posts.map(p => p.data.children.map(c => (
-      {
-        comment: c.data.body ?? '',
-        replies: c.data.replies
-      }
-    ))).flat();
-  }
-
   const Comments = () => (
-    <IonContent fullscreen>
-      <IonList>
-        {normalizedData().map((c, i) =>
-          <Comment
-            key={i}
-            open={true}
-            subreddit={subreddit}
-            postId={postId}
-            comment={c.comment}
-            replies={c.replies} />
-        )}
-      </IonList>
+    <IonContent ref={ionContent} fullscreen>
+      {normalizeData(data).map((c, i) =>
+        <Comment
+          key={i}
+          open={true}
+          subreddit={subreddit}
+          postId={postId}
+          comment={c.data.body ?? ''}
+          replies={c.data.replies} />
+      )}
     </IonContent>
   )
 
